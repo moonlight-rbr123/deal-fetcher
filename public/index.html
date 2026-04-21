@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Fetcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .deals-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .deals-grid .deal-button:first-child {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 600px) {
+            .deals-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .deal-button {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .deal-button:hover {
+            border-color: #667eea;
+            background: #f5f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .deal-button.loading {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .link-box {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            word-break: break-all;
+            font-size: 12px;
+            color: #666;
+            font-family: 'Courier New', monospace;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        .logout-btn {
+            background: #ff6b6b;
+            margin-top: 20px;
+        }
+
+        .logout-btn:hover {
+            background: #ff5252;
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .user-info {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .copy-button {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .copy-button:hover {
+            background: #764ba2;
+        }
+
+        .copy-button.copied {
+            background: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎁 Deal Fetcher</h1>
+            <p>Get your exclusive deals</p>
+        </div>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="section active">
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="button btn-primary">Login</button>
+            </form>
+            <div id="loginError" class="message error" style="display: none; margin-top: 15px;"></div>
+        </div>
+
+        <!-- Deals Section -->
+        <div id="dealsSection" class="section">
+            <div class="user-info">
+                Logged in as: <strong id="userEmail"></strong>
+            </div>
+
+            <div id="dealsMessage" class="message info" style="display: none;"></div>
+            <div id="dealsError" class="message error" style="display: none;"></div>
+
+            <h2 style="margin-bottom: 20px; color: #333; font-size: 20px;">Available Deals</h2>
+            <div id="dealsGrid" class="deals-grid"></div>
+
+            <!-- Purchase Link Result -->
+            <div id="resultSection" style="display: none; margin-top: 30px; padding-top: 30px; border-top: 2px solid #e0e0e0;">
+                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px;">Your Purchase Link</h3>
+                <div id="linkMessage" class="message success"></div>
+                <div class="link-box" id="purchaseLink"></div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="copy-button" onclick="copyLink(this)">📋 Copy Link</button>
+                    <button type="button" class="button btn-primary" style="flex: 1;" onclick="openLink()">🔗 Open Link</button>
+                </div>
+            </div>
+
+            <button type="button" class="button logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        let currentEmail = '';
+        let currentPurchaseLink = '';
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('loginError');
+
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="loading-spinner"></span>Logging in...';
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    let errorMessage = data.error || 'Login failed';
+                    if (errorMessage.toLowerCase().includes('account not found') || errorMessage.toLowerCase().includes('user not found')) {
+                        errorMessage = 'Account not found';
+                    } else if (response.status === 401 || errorMessage.toLowerCase().includes('authenticate')) {
+                        errorMessage = 'Invalid credentials';
+                    }
+                    throw new Error(errorMessage);
+                }
+
+                // Success - show deals
+                currentEmail = email;
+                document.getElementById('userEmail').textContent = email;
+                displayDeals(data.deals);
+                document.getElementById('loginSection').classList.remove('active');
+                document.getElementById('dealsSection').classList.add('active');
+                loginError.style.display = 'none';
+
+            } catch (error) {
+                loginError.textContent = '❌ ' + error.message;
+                loginError.style.display = 'block';
+                console.error('Login error:', error);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Login';
+            }
+        });
+
+        function displayDeals(deals) {
+            const dealsGrid = document.getElementById('dealsGrid');
+            dealsGrid.innerHTML = '';
+
+            if (!deals || deals.length === 0) {
+                const message = document.getElementById('dealsMessage');
+                message.textContent = 'ℹ️ No active deals available at the moment.';
+                message.style.display = 'block';
+                return;
+            }
+
+            deals.forEach(deal => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'deal-button';
+                button.textContent = deal.name;
+                button.onclick = () => getPurchaseLink(deal.id, deal.name, button);
+                dealsGrid.appendChild(button);
+            });
+        }
+
+        async function getPurchaseLink(dealId, dealName, buttonElement) {
+            const dealsError = document.getElementById('dealsError');
+            const resultSection = document.getElementById('resultSection');
+
+            buttonElement.classList.add('loading');
+            buttonElement.disabled = true;
+            const originalText = buttonElement.textContent;
+            buttonElement.innerHTML = '<span class="loading-spinner"></span>Loading...';
+
+            try {
+                const response = await fetch('/api/get-link', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: currentEmail, dealId: dealId })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    let errorMessage = data.error || 'Failed to get purchase link';
+                    if (response.status === 401) {
+                        errorMessage = 'Session expired. Please login again.';
+                    } else if (response.status === 404) {
+                        errorMessage = 'Deal not found';
+                    }
+                    throw new Error(errorMessage);
+                }
+
+                // Success - display the link
+                currentPurchaseLink = data.link;
+                document.getElementById('purchaseLink').textContent = data.link;
+                document.getElementById('linkMessage').textContent = `✅ Purchase link for ${dealName} is ready!`;
+                resultSection.style.display = 'block';
+                dealsError.style.display = 'none';
+
+                // Scroll to result
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                dealsError.textContent = '❌ ' + error.message;
+                dealsError.style.display = 'block';
+                resultSection.style.display = 'none';
+                console.error('Get link error:', error);
+            } finally {
+                buttonElement.classList.remove('loading');
+                buttonElement.disabled = false;
+                buttonElement.textContent = originalText;
+            }
+        }
+
+        function copyLink(btn) {
+            if (!currentPurchaseLink) return;
+
+            navigator.clipboard.writeText(currentPurchaseLink).then(() => {
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '📋 Copy Link';
+                    btn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+
+        function openLink() {
+            if (currentPurchaseLink) {
+                window.open(currentPurchaseLink, '_blank');
+            }
+        }
+
+        function logout() {
+            currentEmail = '';
+            currentPurchaseLink = '';
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginError').style.display = 'none';
+            document.getElementById('dealsError').style.display = 'none';
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('loginSection').classList.add('active');
+            document.getElementById('dealsSection').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
