@@ -277,6 +277,10 @@
             background: #4caf50;
             color: white;
         }
+
+        #apiConfigModal[style*="display: flex"] {
+            display: flex !important;
+        }
     </style>
 </head>
 <body>
@@ -299,7 +303,32 @@
                 </div>
                 <button type="submit" class="button btn-primary">Login</button>
             </form>
+            <button type="button" class="button btn-secondary" style="margin-top: 10px; background: #5A5A5A;" onclick="showApiConfig()">⚙️ API Configuration</button>
             <div id="loginError" class="message error" style="display: none; margin-top: 15px;"></div>
+
+            <!-- API Configuration Modal -->
+            <div id="apiConfigModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center;">
+                <div style="background: #1B2E7E; border-radius: 20px; border: 3px solid #2A4CB8; padding: 30px; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.7);">
+                    <h2 style="color: #FFFFFF; margin-bottom: 20px; font-size: 20px; font-weight: 700;">Backend Configuration</h2>
+                    <p style="color: #B0C4FF; margin-bottom: 15px; font-size: 14px;">
+                        Enter your backend server URL. If your deploying on GitHub Pages, you need a backend server elsewhere.
+                        <br><br>
+                        <strong>Examples:</strong><br>
+                        - Railway: https://my-backend.railway.app<br>
+                        - Heroku: https://my-backend.herokuapp.com<br>
+                        - Local: http://localhost:3000
+                    </p>
+                    <div class="form-group">
+                        <label for="apiUrl">Backend Server URL</label>
+                        <input type="text" id="apiUrl" placeholder="e.g., https://my-backend.railway.app" style="width: 100%; padding: 14px; border: 2px solid #3A5FD8; border-radius: 12px; font-size: 14px; background: #FFFFFF; color: #333; box-sizing: border-box;">
+                    </div>
+                    <div id="apiConfigError" class="message error" style="display: none; margin-bottom: 15px;"></div>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="button" class="button btn-secondary" style="flex: 1;" onclick="saveApiConfig()">Save</button>
+                        <button type="button" class="button btn-secondary" style="flex: 1; background: #5A5A5A;" onclick="closeApiConfig()">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Deals Section -->
@@ -333,8 +362,22 @@
         let currentEmail = '';
         let currentPurchaseLink = '';
 
-        // Get API base URL (same domain by default)
+        // Get API base URL from URL parameter, localStorage, or default to relative path
         function getApiBaseUrl() {
+            // Check URL parameter first (e.g., ?api=https://backend.example.com)
+            const urlParams = new URLSearchParams(window.location.search);
+            const apiParam = urlParams.get('api');
+            if (apiParam) {
+                localStorage.setItem('dealFetcherApi', apiParam);
+                return apiParam.replace(/\/$/, ''); // Remove trailing slash
+            }
+            
+            // Check localStorage
+            const stored = localStorage.getItem('dealFetcherApi');
+            if (stored) {
+                return stored.replace(/\/$/, '');
+            }
+            
             // Default to relative path (works when backend is on same domain)
             return '';
         }
@@ -492,6 +535,50 @@
             document.getElementById('resultSection').style.display = 'none';
             document.getElementById('loginSection').classList.add('active');
             document.getElementById('dealsSection').classList.remove('active');
+        }
+
+        // API Configuration functions
+        function showApiConfig() {
+            const modal = document.getElementById('apiConfigModal');
+            const input = document.getElementById('apiUrl');
+            input.value = localStorage.getItem('dealFetcherApi') || '';
+            modal.style.display = 'flex';
+            document.getElementById('apiConfigError').style.display = 'none';
+            document.getElementById('apiConfigError').classList.remove('success');
+            document.getElementById('apiConfigError').classList.add('error');
+        }
+
+        function closeApiConfig() {
+            document.getElementById('apiConfigModal').style.display = 'none';
+            document.getElementById('apiConfigError').style.display = 'none';
+        }
+
+        function saveApiConfig() {
+            const url = document.getElementById('apiUrl').value.trim();
+            const errorDiv = document.getElementById('apiConfigError');
+
+            if (!url) {
+                errorDiv.textContent = '❌ Please enter a backend URL';
+                errorDiv.classList.add('error');
+                errorDiv.classList.remove('success');
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            if (!url.match(/^https?:\/\//)) {
+                errorDiv.textContent = '❌ URL must start with http:// or https://';
+                errorDiv.classList.add('error');
+                errorDiv.classList.remove('success');
+                errorDiv.style.display = 'block';
+                return;
+            }
+
+            localStorage.setItem('dealFetcherApi', url.replace(/\/$/, ''));
+            errorDiv.textContent = '✅ Configuration saved! Refreshing...';
+            errorDiv.classList.remove('error');
+            errorDiv.classList.add('success');
+            errorDiv.style.display = 'block';
+            setTimeout(() => location.reload(), 1500);
         }
 
         // Check for background.png and set background accordingly
