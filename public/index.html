@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0F1C4F 0%, #1F3A8A 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,9 +22,10 @@
         }
 
         .container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: #1B2E7E;
+            border-radius: 20px;
+            border: 3px solid #2A4CB8;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             padding: 40px;
             max-width: 600px;
             width: 100%;
@@ -36,13 +37,15 @@
         }
 
         .header h1 {
-            color: #333;
-            font-size: 28px;
+            color: #FFFFFF;
+            font-size: 32px;
             margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .header p {
-            color: #666;
+            color: #B0C4FF;
             font-size: 14px;
         }
 
@@ -61,45 +64,55 @@
         label {
             display: block;
             margin-bottom: 8px;
-            color: #333;
+            color: #A8B8E8;
             font-weight: 500;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         input[type="email"],
         input[type="password"] {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 14px;
+            border: 2px solid #3A5FD8;
+            border-radius: 12px;
             font-size: 14px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            background: #FFFFFF;
+            color: #333;
         }
 
         input[type="email"]:focus,
         input[type="password"]:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
 
         .button {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #D91E63 0%, #C41E50 100%);
             color: white;
+            box-shadow: 0 8px 16px rgba(217, 30, 99, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 12px 24px rgba(217, 30, 99, 0.5);
+            background: linear-gradient(135deg, #E535B8 0%, #D91E63 100%);
         }
 
         .btn-primary:disabled {
@@ -109,12 +122,12 @@
         }
 
         .btn-secondary {
-            background: #f0f0f0;
-            color: #333;
+            background: #3A5FD8;
+            color: #FFFFFF;
         }
 
         .btn-secondary:hover {
-            background: #e0e0e0;
+            background: #4A70E8;
         }
 
         .deals-grid {
@@ -136,21 +149,21 @@
 
         .deal-button {
             padding: 15px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 8px;
+            border: 2px solid #3A5FD8;
+            background: #2A4CB8;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 14px;
             font-weight: 600;
-            color: #333;
+            color: #FFFFFF;
         }
 
         .deal-button:hover {
-            border-color: #667eea;
-            background: #f5f5ff;
+            border-color: #FFD700;
+            background: #3A5FD8;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
         }
 
         .deal-button.loading {
@@ -160,38 +173,39 @@
 
         .message {
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 20px;
             font-size: 14px;
         }
 
         .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background: #2A5F3F;
+            color: #7DFFAD;
+            border: 1px solid #4A8F5F;
         }
 
         .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background: #5F3F3F;
+            color: #FF9999;
+            border: 1px solid #8F5F5F;
         }
 
         .message.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            background: #3A5FD8;
+            color: #E8F0FF;
+            border: 1px solid #5A7FFF;
         }
 
         .link-box {
-            background: #f5f5f5;
+            background: #2A4CB8;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 15px;
             word-break: break-all;
             font-size: 12px;
-            color: #666;
+            color: #B0C4FF;
             font-family: 'Courier New', monospace;
+            border: 1px solid #3A5FD8;
         }
 
         .button-group {
@@ -204,30 +218,32 @@
         }
 
         .logout-btn {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #D91E63 0%, #C41E50 100%);
             margin-top: 20px;
+            box-shadow: 0 8px 16px rgba(217, 30, 99, 0.3);
         }
 
         .logout-btn:hover {
-            background: #ff5252;
-            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+            background: linear-gradient(135deg, #E535B8 0%, #D91E63 100%);
+            box-shadow: 0 12px 24px rgba(217, 30, 99, 0.5);
         }
 
         .user-info {
-            background: #f5f5f5;
+            background: #2A4CB8;
             padding: 12px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 20px;
             font-size: 14px;
-            color: #666;
+            color: #B0C4FF;
+            border: 1px solid #3A5FD8;
         }
 
         .loading-spinner {
             display: inline-block;
             width: 12px;
             height: 12px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #667eea;
+            border: 2px solid #A8B8E8;
+            border-top: 2px solid #FFD700;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-right: 8px;
@@ -240,23 +256,26 @@
         }
 
         .copy-button {
-            background: #667eea;
-            color: white;
+            background: #FFD700;
+            color: #1B2E7E;
             padding: 8px 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
             margin-top: 10px;
             transition: all 0.3s;
+            font-weight: 600;
         }
 
         .copy-button:hover {
-            background: #764ba2;
+            background: #FFED4E;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
         }
 
         .copy-button.copied {
             background: #4caf50;
+            color: white;
         }
     </style>
 </head>
@@ -292,12 +311,12 @@
             <div id="dealsMessage" class="message info" style="display: none;"></div>
             <div id="dealsError" class="message error" style="display: none;"></div>
 
-            <h2 style="margin-bottom: 20px; color: #333; font-size: 20px;">Available Deals</h2>
+            <h2 style="margin-bottom: 20px; color: #FFFFFF; font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Available Deals</h2>
             <div id="dealsGrid" class="deals-grid"></div>
 
             <!-- Purchase Link Result -->
-            <div id="resultSection" style="display: none; margin-top: 30px; padding-top: 30px; border-top: 2px solid #e0e0e0;">
-                <h3 style="color: #333; margin-bottom: 15px; font-size: 16px;">Your Purchase Link</h3>
+            <div id="resultSection" style="display: none; margin-top: 30px; padding-top: 30px; border-top: 2px solid #3A5FD8;">
+                <h3 style="color: #FFFFFF; margin-bottom: 15px; font-size: 16px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Your Purchase Link</h3>
                 <div id="linkMessage" class="message success"></div>
                 <div class="link-box" id="purchaseLink"></div>
                 <div style="display: flex; gap: 10px;">
