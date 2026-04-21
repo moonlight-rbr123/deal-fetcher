@@ -263,8 +263,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎁 Deal Fetcher</h1>
-            <p>Get your exclusive deals</p>
+            <h1>Deal Fetcher</h1>
+            <p>Give others a link to buy you tanks!</p>
         </div>
 
         <!-- Login Section -->
@@ -466,6 +466,20 @@
             document.getElementById('loginSection').classList.add('active');
             document.getElementById('dealsSection').classList.remove('active');
         }
+
+        // Check for background.png and set background accordingly
+        fetch('background.png')
+            .then(response => {
+                if (response.ok) {
+                    document.body.style.backgroundImage = 'url(background.png)';
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundRepeat = 'no-repeat';
+                }
+            })
+            .catch(() => {
+                // Keep the gradient background (already set in CSS)
+            });
     </script>
 </body>
 </html>
