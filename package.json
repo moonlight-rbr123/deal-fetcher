@@ -2,19 +2,19 @@
   "name": "deal-fetcher",
   "version": "1.0.0",
   "description": "Deal fetcher with web frontend",
-  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "wrangler pages dev ./public",
+    "deploy": "wrangler pages deploy ./public",
+    "build": "echo \"No build needed\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^18.0.6",
-    "axios": "^1.6.8",
-    "express": "^4.18.2",
-    "prompt-sync": "^4.2.0",
-    "cors": "^2.8.5"
+    "axios": "^1.6.8"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
   }
 }

@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Wrangler
+dist/
+.wrangler/
+wrangler-account-id
+
+# Environment
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db

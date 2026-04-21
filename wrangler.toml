@@ -1,0 +1,10 @@
+name = "deal-fetcher"
+type = "javascript"
+compatibility_date = "2024-04-01"
+
+[build]
+command = "npm install"
+cwd = "./"
+
+[env.production]
+name = "deal-fetcher-prod"
