@@ -2,10 +2,8 @@
   "name": "deal-fetcher",
   "version": "1.0.0",
   "description": "Deal fetcher with web frontend",
-  "type": "module",
   "scripts": {
     "dev": "wrangler pages dev ./public",
-    "deploy": "wrangler pages deploy ./public",
     "build": "echo \"No build needed\""
   },
   "keywords": [],
